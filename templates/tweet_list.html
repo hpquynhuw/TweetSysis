@@ -1,0 +1,18 @@
+{% if query  %}
+<table class="table table-borderless">
+    <thead>
+      <tr>
+        <th>Tweet text</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for n in data: %}
+      <tr>
+        <td> <a href="/<place>/<n['name']>">
+          {{  n['text']  }} </a>
+        </td>
+      </tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}

@@ -3,13 +3,14 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Testing how cool Quinh is</title>
+    <title>TweetSysis</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <!-- Custom styles for this template -->
     <link href="/static/pretty.css" rel="stylesheet">
-
+    <link href="/static/bootstrap.css" rel="stylesheet">
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Rambla:bold,bolditalic,regular|Muli:italic,light,regular,regularitalic,medium">
 
 
@@ -19,9 +20,8 @@
   <body>
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="title"> Quinh is hella cool </h1>
-      <p class="subtitle"> Yes she kinda is sometimes, but she should actually put down the
-        project summary here. </p>
+      <h1 class="title"> TweetSysis </h1>
+      <h2 class="subtitle"> Explore trending hashtags in different cities. See popular tweets. Analyze their sentiment with textBlob. </h2>
     </div>
   </div>
 
@@ -30,27 +30,24 @@
     <div class="col">
       <h2>Today's trends</h2>
       <p> Select location to see trending Twitter topics: </p>
+          <!-- <input type="button" class="btn-check" name="btnradio" id="btnradio1" onclick="location.href='/Seattle'">
+          <label class="btn btn-outline-primary" for="btnradio1">Seattle</label> -->
+          <button type="button" class="btn btn-primary" onclick="location.href='/Seattle'">Seattle</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/Sydney'">Sydney</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/London'">London</button>
+          <button type="button" class="btn btn-primary" onclick="location.href='/Toronto'">Toronto</button>
 
-
-      <a href="/seattle"><input class="btn btn-danger" type="button" value="Seattle"></a>
-
-      <a href="/sydney"><input type="button" value="Sydney"></a>
-
-      <a href="/london"><input type="button" value="London"></a>
-
-      <a href="/toronto"><input type="button" value="Toronto"></a>
-
-
-        {% block content %}
-
-        {% endblock %}
+      {% include "list.html" %}
 
     </div>
     <div class="col">
-      <h2></h2>
+      <h2>Sample tweets for {{ query }}</h2>
+        <!-- {% block content1 %}
+
+        {% endblock %} -->
     </div>
   <div class="col">
-    <h2>Trends leaderboard</h2>
+    <h2>Sentiment analysis</h2>
   </div>
 
 

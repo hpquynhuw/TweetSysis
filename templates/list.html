@@ -1,22 +1,22 @@
-{% extends "test.html" %}
-{% block content %}
-<p>  </p>
 <table class="table table-borderless">
     <thead>
       <tr>
-        <th>Trend name</th>
+        <th>Trend names in {{ place }}</th>
         <th>Tweet Volume</th>
       </tr>
     </thead>
     <tbody>
-{% for n in data[0]['trends']: %}
-  {% if n['tweet_volume'] != None: %}
-      <tr>
-        <td>{{ n['name'] }}</td>
-        <td>{{ n['tweet_volume'] }}</td>
-      </tr>
-  {% endif %}
-{% endfor %}
+      {% if data != [] %}
+          {% for n in data[0]['trends']: %}
+              {% if n['tweet_volume'] != None: %}
+                  <tr>
+                    <td> <a href="/{{place}}/{{n['name']}}>">
+                      {{  n['name']  }} </a>
+                    </td>
+                    <td>{{ n['tweet_volume'] }}</td>
+                  </tr>
+              {% endif %}
+          {% endfor %}
+      {% endif %}
 </tbody>
 </table>
-{% endblock %}

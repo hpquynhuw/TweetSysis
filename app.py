@@ -4,20 +4,22 @@ import os
 from datetime import date
 import requests
 
-from secrets import twitter_token
-from secrets import base_url
+from secrets import twitter_token, base_url, search_url, token2
 now = date.today()  # end date
 
-places = {'seattle':'2490383',
-          'toronto': '4118',
-           'sydney':'1105779',
-           'london':'44418'}
+places = {'Seattle':'2490383',
+          'Toronto': '4118',
+           'Sydney':'1105779',
+           'London':'44418'}
 headers={"Authorization": "Bearer {}".format(twitter_token)}
+headers2={"Authorization": "Bearer {}".format(token2)}
+
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 @app.route('/')
 def hello_world():
-    return render_template('test.html')
+    return render_template('base.html', data=[], place="")
 
 @app.route('/home', methods=['GET'])
 def back_home():
@@ -30,13 +32,20 @@ def favicon():
 
 @app.route('/<place>', methods=['GET'])
 def get_trends_today(place):
-    # a=str(place)
-    # print(a)
     trend_url = base_url + "trends/place.json?id=" + places[place]
     res = requests.get(trend_url, headers=headers)
-    # filename = os.path.join(app.static_folder, 'data', f'{place}_2020-07-14.json')
-    # data = json.load(open(filename))
     tweet_data = res.json()
-    # filename = os.path.join(app.static_folder, 'data', 'seattle_2020-07-14.json')
-    # data = json.load(tweet_data)
-    return render_template('list.html', data=tweet_data)
+    # render_template('list.html', data=tweet_data, place=place)
+    return render_template('base.html', data=tweet_data, place=place);
+
+@app.route('/<place>/<query>', methods=['GET'])
+def search(place, query):
+    query_url=search_url.format(query)
+    res=requests.get(query_url, headers=headers)
+    tweet_data=res.json()
+    render_template('tweet_list.html', data=tweet_data['statuses'], query=query)
+    return redirect(url_for('hello_world'));
+
+if __name__ == '__main__':
+    app.jinja_env.auto_reload = True
+    app.run(debug=True)
