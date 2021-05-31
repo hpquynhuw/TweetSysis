@@ -13,15 +13,15 @@
           <p> Select location to see trending Twitter topics: </p>
           <div>
             <b-button-group>
-              <b-button @click="onGetTrends(Seattle)">Seattle</b-button>
-              <b-button @click="onGetTrends(Sydney)">Sydney</b-button>
-              <b-button @click="onGetTrends(London)">London</b-button>
-              <b-button @click="onGetTrends(Toronto)">Toronto</b-button>
+              <b-button @click="onGetTrends('Seattle')">Seattle</b-button>
+              <b-button @click="onGetTrends('Sydney')">Sydney</b-button>
+              <b-button @click="onGetTrends('London')">London</b-button>
+              <b-button @click="onGetTrends('Toronto')">Toronto</b-button>
             </b-button-group>
-            <br>
-            <b-table hover :items="trends" :fields="fields" v-if="showTrends">
-
-            </b-table>
+            <br><br>
+            <b-table hover :items="trends" :fields="fields" v-if="showTrends"
+                     @click="onGetTweets('${trends.name}')"></b-table>
+<!--https://bootstrap-vue.org/docs/components/table#jane-doe-->
           </div>
         </b-col>
         <b-col>2 of 3</b-col>
@@ -33,6 +33,7 @@
 
 <script>
 import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -45,18 +46,24 @@ export default {
     getTrends(location) {
       const path = `http://localhost:5000/trends/${location}`;
       axios.get(path)
-        .then(() => {
+        .then((res) => {
           this.trends = res.data.trends;
           this.showTrends = true;
-          this.fields=['name','tweet_volume']
+          this.fields = ['name', 'tweet_volume'];
         })
         .catch((error) => {
           // eslint-disable-next-line
           console.error(error);
         });
     },
+    getTweets(query) {
+      console.log(query);
+    },
     onGetTrends(location) {
       this.getTrends(location);
+    },
+    onGetTweets(query) {
+      this.getTweets(query);
     },
   },
 };

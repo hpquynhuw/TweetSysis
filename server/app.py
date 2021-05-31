@@ -42,17 +42,22 @@ def ping_pong():
 
 @app.route('/trends/<location>', methods=['GET'])
 def get_trends_today(location):
+    TRENDS = []
     trend_url = base_url + "trends/place.json?id=" + places[location]
     res = requests.get(trend_url, headers=headers)
     tweet_data = res.json()
+    for i in tweet_data[0]['trends']:
+        if i['tweet_volume'] is not None:
+            TRENDS.append({
+                'name': i['name'],
+                'tweet_volume': i['tweet_volume']
+            })
     return jsonify({
         'status': 'success',
-        'trends': tweet_data[0]['trends']
+        'trends': TRENDS
     })
-    # render_template('list.html', data=tweet_data, place=place)
-    #return render_template('base.html', data=tweet_data, place=location);
 
-#
+
 # @app.route('/<place>/<query>', methods=['GET'])
 # def search(place, query):
 #     query_url = search_url.format(query)
