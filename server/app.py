@@ -30,39 +30,37 @@ def ping_pong():
     return jsonify('pong!')
 
 
-@app.route('/')
-def hello_world():
-    return render_template('base.html', data=[], place="")
+# @app.route('/')
+# def hello_world():
+#     return render_template('base.html', data=[], place="")
 
 
-@app.route('/home', methods=['GET'])
-def back_home():
-    return redirect(url_for('hello_world'));
+# @app.route('/home', methods=['GET'])
+# def back_home():
+#     return redirect(url_for('hello_world'));
 
 
-@app.route('/favicon.ico')
-def favicon():
-    return send_from_directory(os.path.join(app.root_path, 'static'),
-                               'favicon.ico', mimetype='favicon.ico')
-
-
-@app.route('/<place>', methods=['GET'])
-def get_trends_today(place):
-    trend_url = base_url + "trends/place.json?id=" + places[place]
+@app.route('/trends/<location>', methods=['GET'])
+def get_trends_today(location):
+    trend_url = base_url + "trends/place.json?id=" + places[location]
     res = requests.get(trend_url, headers=headers)
     tweet_data = res.json()
+    return jsonify({
+        'status': 'success',
+        'trends': tweet_data[0]['trends']
+    })
     # render_template('list.html', data=tweet_data, place=place)
-    return render_template('base.html', data=tweet_data, place=place);
+    #return render_template('base.html', data=tweet_data, place=location);
 
-
-@app.route('/<place>/<query>', methods=['GET'])
-def search(place, query):
-    query_url = search_url.format(query)
-    res = requests.get(query_url, headers=headers)
-    tweet_data = res.json()
-    render_template('tweet_list.html', data=tweet_data['statuses'], query=query)
-    return redirect(url_for('hello_world'));
-
+#
+# @app.route('/<place>/<query>', methods=['GET'])
+# def search(place, query):
+#     query_url = search_url.format(query)
+#     res = requests.get(query_url, headers=headers)
+#     tweet_data = res.json()
+#     render_template('tweet_list.html', data=tweet_data['statuses'], query=query)
+#     return redirect(url_for('hello_world'));
+#
 
 if __name__ == '__main__':
     app.run()
